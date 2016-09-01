@@ -10,7 +10,7 @@ import UIKit
 import AVFoundation
 
 @objc protocol FSVideoCameraViewDelegate: class {
-    func videoFinished(withFileURL fileURL: NSURL)
+    func videoFinished(withFileURL fileURL: URL)
 }
 
 final class FSVideoCameraView: UIView {
@@ -281,11 +281,11 @@ final class FSVideoCameraView: UIView {
 
 extension FSVideoCameraView: AVCaptureFileOutputRecordingDelegate {
     
-    func capture(_ captureOutput: AVCaptureFileOutput!, didStartRecordingToOutputFileAt fileURL: URL!, fromConnections connections: [AnyObject]!) {
+    func capture(_ captureOutput: AVCaptureFileOutput!, didStartRecordingToOutputFileAt fileURL: URL!, fromConnections connections: [Any]!) {
         print("started recording to: \(fileURL)")
     }
     
-    func capture(_ captureOutput: AVCaptureFileOutput!, didFinishRecordingToOutputFileAt outputFileURL: URL!, fromConnections connections: [AnyObject]!, error: Error!) {
+    func capture(_ captureOutput: AVCaptureFileOutput!, didFinishRecordingToOutputFileAt outputFileURL: URL!, fromConnections connections: [Any]!, error: Error!) {
         print("finished recording to: \(outputFileURL)")
         self.delegate?.videoFinished(withFileURL: outputFileURL)
     }

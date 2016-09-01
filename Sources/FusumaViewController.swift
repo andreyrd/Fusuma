@@ -13,7 +13,7 @@ import Photos
     
     func fusumaImageSelected(_ image: UIImage)
     @objc optional func fusumaDismissedWithImage(_ image: UIImage)
-    func fusumaVideoCompleted(withFileURL fileURL: NSURL)
+    func fusumaVideoCompleted(withFileURL fileURL: URL)
     func fusumaCameraRollUnauthorized()
     
     @objc optional func fusumaClosed()
@@ -325,7 +325,7 @@ extension FusumaViewController: FSAlbumViewDelegate, FSCameraViewDelegate, FSVid
         delegate?.fusumaCameraRollUnauthorized()
     }
     
-    func videoFinished(withFileURL fileURL: NSURL) {
+    func videoFinished(withFileURL fileURL: URL) {
         delegate?.fusumaVideoCompleted(withFileURL: fileURL)
         self.dismiss(animated: true, completion: nil)
     }
@@ -394,7 +394,7 @@ private extension FusumaViewController {
         cameraButton.tintColor  = fusumaBaseTintColor
         libraryButton.tintColor = fusumaBaseTintColor
         
-        if cameraButton.layer.sublayers?.count > 1 {
+        if cameraButton.layer.sublayers?.count ?? 0 > 1 {
             
             for layer in cameraButton.layer.sublayers! {
                 
@@ -406,7 +406,7 @@ private extension FusumaViewController {
             }
         }
         
-        if libraryButton.layer.sublayers?.count > 1 {
+        if libraryButton.layer.sublayers?.count ?? 0 > 1 {
             
             for layer in libraryButton.layer.sublayers! {
                 
@@ -422,7 +422,7 @@ private extension FusumaViewController {
             
             videoButton.tintColor = fusumaBaseTintColor
             
-            if videoButton.layer.sublayers?.count > 1 {
+            if videoButton.layer.sublayers?.count ?? 0 > 1 {
                 
                 for layer in videoButton.layer.sublayers! {
                     

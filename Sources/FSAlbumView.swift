@@ -25,7 +25,7 @@ final class FSAlbumView: UIView, UICollectionViewDataSource, UICollectionViewDel
     
     weak var delegate: FSAlbumViewDelegate? = nil
     
-    var images: PHFetchResult<AnyObject>!
+    var images: PHFetchResult<PHAsset>!
     var imageManager: PHCachingImageManager?
     var previousPreheatRect: CGRect = CGRect.zero
     let cellSize = CGSize(width: 100, height: 100)
@@ -86,11 +86,11 @@ final class FSAlbumView: UIView, UICollectionViewDataSource, UICollectionViewDel
             NSSortDescriptor(key: "creationDate", ascending: false)
         ]
         
-        images = PHAsset.fetchAssets(with: .image, options: options) as! PHFetchResult<AnyObject>
+        images = PHAsset.fetchAssets(with: .image, options: options)
         
         if images.count > 0 {
             
-            changeImage(images[0] as! PHAsset)
+            changeImage(images[0])
             collectionView.reloadData()
             collectionView.selectItem(at: IndexPath(row: 0, section: 0), animated: false, scrollPosition: [])
         }
@@ -238,7 +238,7 @@ final class FSAlbumView: UIView, UICollectionViewDataSource, UICollectionViewDel
         cell.tag = currentTag
         
         let asset = self.images[indexPath.item]
-        self.imageManager?.requestImage(for: asset as! PHAsset,
+        self.imageManager?.requestImage(for: asset,
             targetSize: cellSize,
             contentMode: .aspectFill,
             options: nil) {
@@ -271,7 +271,7 @@ final class FSAlbumView: UIView, UICollectionViewDataSource, UICollectionViewDel
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        changeImage(images[indexPath.row] as! PHAsset)
+        changeImage(images[indexPath.row])
         
         imageCropView.changeScrollable(true)
         
@@ -306,7 +306,7 @@ final class FSAlbumView: UIView, UICollectionViewDataSource, UICollectionViewDel
             let collectionChanges = changeInstance.changeDetails(for: self.images)
             if collectionChanges != nil {
                 
-                self.images = collectionChanges!.fetchResultAfterChanges as! PHFetchResult<AnyObject>
+                self.images = collectionChanges!.fetchResultAfterChanges
                 
                 let collectionView = self.collectionView!
                 
@@ -340,10 +340,10 @@ final class FSAlbumView: UIView, UICollectionViewDataSource, UICollectionViewDel
 
 internal extension UICollectionView {
     
-    func aapl_indexPathsForElementsInRect(_ rect: CGRect) -> [NSIndexPath] {
+    func aapl_indexPathsForElementsInRect(_ rect: CGRect) -> [IndexPath] {
         let allLayoutAttributes = self.collectionViewLayout.layoutAttributesForElements(in: rect)
         if (allLayoutAttributes?.count ?? 0) == 0 {return []}
-        var indexPaths: [NSIndexPath] = []
+        var indexPaths: [IndexPath] = []
         indexPaths.reserveCapacity(allLayoutAttributes!.count)
         for layoutAttributes in allLayoutAttributes! {
             let indexPath = layoutAttributes.indexPath
@@ -365,7 +365,7 @@ internal extension IndexSet {
     }
 }
 
-private extension FSAlbumView {
+fileprivate extension FSAlbumView {
     
     func changeImage(_ asset: PHAsset) {
         
@@ -393,7 +393,7 @@ private extension FSAlbumView {
     }
     
     // Check the status of authorization for PHPhotoLibrary
-    private func checkPhotoAuth() {
+    fileprivate func checkPhotoAuth() {
         
         PHPhotoLibrary.requestAuthorization { (status) -> Void in
             switch status {
@@ -401,7 +401,7 @@ private extension FSAlbumView {
                 self.imageManager = PHCachingImageManager()
                 if self.images != nil && self.images.count > 0 {
                     
-                    self.changeImage(self.images[0] as! PHAsset)
+                    self.changeImage(self.images[0])
                 }
                 
             case .restricted, .denied:
@@ -432,8 +432,8 @@ private extension FSAlbumView {
         let delta = abs(preheatRect.midY - self.previousPreheatRect.midY)
         if delta > self.collectionView!.bounds.height / 3.0 {
             
-            var addedIndexPaths: [NSIndexPath] = []
-            var removedIndexPaths: [NSIndexPath] = []
+            var addedIndexPaths: [IndexPath] = []
+            var removedIndexPaths: [IndexPath] = []
             
             self.computeDifferenceBetweenRect(self.previousPreheatRect, andRect: preheatRect, removedHandler: {removedRect in
                 let indexPaths = self.collectionView.aapl_indexPathsForElementsInRect(removedRect)
@@ -487,13 +487,13 @@ private extension FSAlbumView {
         }
     }
     
-    func assetsAtIndexPaths(_ indexPaths: [NSIndexPath]) -> [PHAsset] {
+    func assetsAtIndexPaths(_ indexPaths: [IndexPath]) -> [PHAsset] {
         if indexPaths.count == 0 { return [] }
         
         var assets: [PHAsset] = []
         assets.reserveCapacity(indexPaths.count)
         for indexPath in indexPaths {
-            let asset = self.images[indexPath.item] as! PHAsset
+            let asset = self.images[indexPath.item]
             assets.append(asset)
         }
         return assets
