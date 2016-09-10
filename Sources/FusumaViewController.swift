@@ -234,29 +234,29 @@ public final class FusumaViewController: UIViewController {
     
     override public var prefersStatusBarHidden: Bool { return true }
     
-    @IBAction func closeButtonPressed(sender: UIButton) {
+    @IBAction func closeButtonPressed(_ sender: UIButton) {
         self.dismiss(animated: true, completion: {
             
             self.delegate?.fusumaClosed?()
         })
     }
     
-    @IBAction func libraryButtonPressed(sender: UIButton) {
+    @IBAction func libraryButtonPressed(_ sender: UIButton) {
         
         changeMode(Mode.Library)
     }
     
-    @IBAction func photoButtonPressed(sender: UIButton) {
+    @IBAction func photoButtonPressed(_ sender: UIButton) {
     
         changeMode(Mode.Camera)
     }
     
-    @IBAction func videoButtonPressed(sender: UIButton) {
+    @IBAction func videoButtonPressed(_ sender: UIButton) {
         
         changeMode(Mode.Video)
     }
     
-    @IBAction func doneButtonPressed(sender: UIButton) {
+    @IBAction func doneButtonPressed(_ sender: UIButton) {
         
         let view = albumView.imageCropView!
 

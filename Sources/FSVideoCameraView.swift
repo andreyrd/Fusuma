@@ -160,7 +160,7 @@ final class FSVideoCameraView: UIView {
         session?.stopRunning()
     }
     
-    @IBAction func shotButtonPressed(sender: UIButton) {
+    @IBAction func shotButtonPressed(_ sender: UIButton) {
         
         self.toggleRecording()
     }
@@ -205,7 +205,7 @@ final class FSVideoCameraView: UIView {
         return
     }
     
-    @IBAction func flipButtonPressed(sender: UIButton) {
+    @IBAction func flipButtonPressed(_ sender: UIButton) {
         
         session?.stopRunning()
         
@@ -244,7 +244,7 @@ final class FSVideoCameraView: UIView {
         session?.startRunning()
     }
     
-    @IBAction func flashButtonPressed(sender: UIButton) {
+    @IBAction func flashButtonPressed(_ sender: UIButton) {
         
         do {
             
