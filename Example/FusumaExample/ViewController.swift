@@ -28,7 +28,7 @@ class ViewController: UIViewController, FusumaDelegate {
         // Dispose of any resources that can be recreated.
     }
 
-    @IBAction func showButtonPressed(sender: UIButton) {
+    @IBAction func showButtonPressed(_ sender: UIButton) {
         
         // Show Fusuma
         let fusuma = FusumaViewController()
